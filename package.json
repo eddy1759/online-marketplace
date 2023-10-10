@@ -1,0 +1,62 @@
+{
+  "name": "online-marketplace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/www.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "start": "node bin/www.js",
+    "dev": "nodemon bin/www.js",
+    "debug": "DEBUG=online-marketplace:* nodemon bin/www.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --write",
+    "test": "jest --watchAll --verbose",
+    "test:coverage": "jest --coverage --verbose",
+    "lint-format": "npm run lint:fix && npm run prettier",
+    "prepare": "husky install",
+    "docker-build": "docker build -t online-marketplace .",
+    "docker-run": "docker run -p 8080:8080 -d online-marketplace"
+  },
+  "keywords": [
+    "marketplace",
+    "online",
+    "api",
+    "e-commerce"
+  ],
+  "author": "Edet Emmanuel Asuquo",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "debug": "^4.3.4",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.1",
+    "helmet": "^7.0.0",
+    "http-errors": "^2.0.0",
+    "http-status": "^1.7.0",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.6",
+    "pg": "^8.11.3",
+    "sequelize": "^6.33.0",
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0",
+    "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.7.2",
+    "@commitlint/config-conventional": "^17.7.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.3",
+    "supertest": "^6.3.3"
+  }
+}
