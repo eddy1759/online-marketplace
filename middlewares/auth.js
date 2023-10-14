@@ -1,8 +1,6 @@
 const httpStatus = require('http-status');
 const { roleRights } = require('../config/roles');
 const ApiError = require('../utils/ApiError');
-const tokenTypes = require('../config/token');
-const tokenService = require('../services/token.service.js');
 
 const verifyCallback = (req, resolve, reject, requiredRights) => {
 	return async (err, user, info) => {
@@ -28,32 +26,14 @@ const verifyCallback = (req, resolve, reject, requiredRights) => {
 	};
 };
 
-const auth = (...requiredRights) => {
-	return async (req, res, next) => {
-		try {
-			const header = req.get('Authorization');
-			if (header === undefined || header === null) {
-				throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
-			}
-			const token = header.split(' ')[1];
-
-			const decoded = await tokenService.verifyToken(
-				token,
-				tokenTypes.ACCESS_TOKEN,
-			);
-
-			if (decoded instanceof Error) {
-				throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
-			}
-			const { user } = decoded;
-			req.user = user;
-
-			await verifyCallback(req, requiredRights);
-			next();
-		} catch (error) {
-			next(error);
-		}
+const auth =
+	(...requiredRights) =>
+	async (req, res, next) => {
+		return new Promise((resolve, reject) => {
+			verifyCallback(req, resolve, reject, requiredRights)(req, res, next);
+		})
+			.then(() => next())
+			.catch((err) => next(err));
 	};
-};
 
 module.exports = auth;
